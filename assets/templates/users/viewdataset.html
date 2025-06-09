@@ -1,0 +1,63 @@
+{% extends 'users/userbase.html' %}
+{% block contents %}
+
+<!-- jQuery + DataTables (if needed later) -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('table').DataTable({
+            "pageLength": 50
+        });
+    });
+</script>
+
+<div class="section-header">
+    <h2 class="section-title wow fadeInDown">Dataset View:</h2>
+</div>
+
+<!-- Search Bar -->
+<div style="text-align: center; margin: 15px 0;">
+    <input type="text" id="search-bar" placeholder="Search dataset..." 
+           style="width: 50%; padding: 8px; border: 1px solid gray; border-radius: 5px;">
+    <button onclick="searchDataset()" style="padding: 8px 15px; margin-left: 5px; border-radius: 5px;">Search</button>
+</div>
+
+<!-- Display count of matches -->
+<p id="match-count" style="text-align: center; font-weight: bold; color: darkred;"></p>
+
+<!-- Dataset Display -->
+<div class="row" style="margin: 10px;">
+    <pre id="dataset-content">{{ data|safe }}</pre>
+</div>
+
+<!-- Highlighting Script with Count -->
+<script>
+    function searchDataset() {
+        const input = document.getElementById("search-bar").value.trim().toLowerCase();
+        const dataset = document.getElementById("dataset-content");
+        const original = dataset.textContent;
+        const countDisplay = document.getElementById("match-count");
+
+        if (!input) {
+            dataset.innerHTML = original; // Reset dataset content
+            countDisplay.innerText = ""; // Reset count
+            return;
+        }
+
+        const regex = new RegExp(`(${input})`, 'gi');
+        let matches = original.match(regex); // Find matches
+        let matchCount = matches ? matches.length : 0;
+
+        // Highlight found words
+        const highlighted = original.replace(regex, '<mark>$1</mark>');
+        dataset.innerHTML = highlighted;
+
+        // Update count display
+        countDisplay.innerText = `Found ${matchCount} match(es) for "${input}"`;
+    }
+</script>
+
+{% endblock %}

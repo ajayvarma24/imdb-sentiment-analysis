@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Prediction</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 40px 20px;
+        background: #f0f0f0;
+        margin: 0;
+      }
+
+      .container {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 480px;
+        margin: 0 auto 40px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #333;
+        margin-bottom: 24px;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 18px;
+        margin: 10px 0;
+        color: #444;
+      }
+
+      /* Input box style */
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 10px 0 20px 0;
+        border: 1.5px solid #ccc;
+        border-radius: 25px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+      }
+
+      input[type="text"]:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #6c63ff;
+        box-shadow: 0 0 8px rgba(108, 99, 255, 0.4);
+      }
+
+      /* Submit button style */
+      button {
+        background-color: #6c63ff;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: #5848c2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Enter Text for Prediction</h2>
+      <form method="POST" action="">
+        <!-- Add csrf_token if using Django -->
+        {% csrf_token %}
+        <input
+          type="text"
+          name="input_text"
+          placeholder="Type something..."
+          required
+        />
+        <br />
+        <button type="submit">Predict</button>
+      </form>
+    </div>
+
+    <div class="container">
+      <h2>Prediction Result</h2>
+      <p><strong>Input:</strong> {{ input_text }}</p>
+      <p><strong>Prediction:</strong> {{ prediction }}</p>
+    </div>
+  </body>
+</html>

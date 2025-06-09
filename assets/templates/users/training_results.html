@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title> IMDB Movie Reviews </title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Free Website Template" name="keywords">
+        <meta content="Free Website Template" name="description">
+
+        <!-- Favicon -->
+        <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+        <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
+        <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        
+        <style>
+            .image-gallery {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                padding: 30px;
+            }
+            .image-card {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .image-card img {
+                width: 100%;
+                height: auto;
+                transition: transform 0.3s ease;
+            }
+            .image-card img:hover {
+                transform: scale(1.05);
+            }
+            .image-card .image-name {
+                padding: 10px;
+                font-weight: bold;
+                background-color: #007bff;
+                color: #fff;
+                font-size: 1.1rem;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Top Bar Start -->
+        <div class="top-bar d-none d-md-block">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="top-bar-left">
+                            <!-- Optional Content -->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="top-bar-right">
+                            <!-- Optional Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top Bar End -->
+
+        <!-- Nav Bar Start -->
+        <div class="navbar navbar-expand-lg bg-dark navbar-dark">
+            <div class="container-fluid">
+                <a href="index.html" class="navbar-brand"> <span style="color:wheat;">CINE PULSE</span></a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto">
+                        <a href="{% url 'UserHome' %}" class="nav-item nav-link">Home</a>
+                        <a href="{% url 'DatasetView' %}" class="nav-item nav-link">Dataset View</a>
+                        <a href="{% url 'training' %}" class="nav-item nav-link">Training</a>
+                        <a href="{% url 'prediction_history' %}" class="nav-item nav-link">View Prediction History</a>
+                        <a href="{% url 'show_admin_data' %}" class="nav-item nav-link">Prediction</a>
+                        <a href="{% url 'show_piechart' %}" class="nav-item nav-link">Pie Chart</a>
+                        <a href="{% url 'index' %}" class="nav-item nav-link">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Nav Bar End -->
+
+        <!-- Page Header Start -->
+        <div class="page-header" style="background:teal;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 style="color:wheat;">AI ENHANCED MOVIE REVIEW SENTIMENT ANALYSIS BY USING MACHINE LEARNING APPROACHES</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Header End -->
+
+        <!-- Content Start -->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-center mb-5">TRAINED MODEL METRICS</h3>
+                </div>
+            </div>
+            <div class="image-gallery">
+                <!-- Image 1 -->
+                <div class="image-card">
+                    <img src="{% static 'img/KNN.png' %}" alt="Movie 1">
+                    <div class="image-name">KNN </div>
+                </div>
+                <!-- Image 2 -->
+                <div class="image-card">
+                    <img src="{% static 'img/DT.png' %}" alt="Movie 2">
+                    <div class="image-name">Decision Tree  </div>
+                </div>
+                <!-- Image 3 -->
+                <div class="image-card">
+                    <img src="{% static 'img/LR.png' %}" alt="Movie 3">
+                    <div class="image-name">logistic regression</div>
+                </div>
+                <!-- Image 4 -->
+                <div class="image-card">
+                    <img src="{% static 'img/NB.png' %}" alt="Movie 4">
+                    <div class="image-name">naive bayes</div>
+                </div>
+                <!-- Image 5 -->
+                <div class="image-card">
+                    <img src="{% static 'img/SVM.png' %}" alt="Movie 5">
+                    <div class="image-name">support vector machine</div>
+                </div>
+                <!-- Image 6 -->
+                <div class="image-card">
+                    <img src="{% static 'img/XGB.png' %}" alt="Movie 6">
+                    <div class="image-name">XGboost</div>
+                </div>
+            </div>
+        </div>
+        <!-- Content End -->
+
+        <!-- Footer Start -->
+        <div class="container copyright">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>&copy; All Rights Reserved by @2025 DNR College.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+        <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+        <script src="{% static 'lib/isotope/isotope.pkgd.min.js' %}"></script>
+        <script src="{% static 'lib/lightbox/js/lightbox.min.js' %}"></script>
+
+        <!-- Template Javascript -->
+        <script src="{% static 'js/main.js' %}"></script>
+    </body>
+</html>

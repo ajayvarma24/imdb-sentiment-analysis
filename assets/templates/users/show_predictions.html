@@ -1,0 +1,100 @@
+{% extends 'users/userbase.html' %}
+{% block contents %}
+
+<h2 align="center">Prediction History</h2>
+
+<!-- Search Bar with Button -->
+<div style="text-align: center; margin: 10px 0;">
+    <input type="text" id="search-bar" placeholder="Search predictions..."
+           style="width: 50%; padding: 8px; border: 1px solid gray; border-radius: 5px;">
+    <button onclick="performSearch()" style="padding: 8px 15px; margin-left: 5px; border-radius: 5px;">Search</button>
+</div>
+
+<!-- Display Count of Matches -->
+<p id="match-count" style="text-align: center; font-weight: bold; color: darkred;"></p>
+
+<!-- Sentiment Summary -->
+<h3 style="text-align: center; color: darkred;">
+    Overall Review: 
+    {% if negative_count > positive_count %}
+        Bad 😞
+    {% else %}
+        Good 😊
+    {% endif %}
+</h3>
+
+<!-- History Table -->
+<table border="1" align="center" cellpadding="10" id="prediction-table">
+    <thead>
+        <tr style="background-color: orange; color: white;">
+            <th>Date & Time</th>
+            <th>Prediction</th>
+            <th>User Input</th>
+            <th>Film Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in predictions %}
+        <tr>
+            <td>{{ entry.timestamp }}</td>
+            <td>{{ entry.output }}</td>
+            <td>{{ entry.user_input }}</td>
+            <td>{{ entry.input_text }}</td>
+        </tr>
+        {% empty %}
+        <tr class="no-data">
+            <td colspan="4">No prediction history found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- JavaScript for Search and Highlight -->
+<script>
+    function performSearch() {
+        const filter = document.getElementById("search-bar").value.toLowerCase();
+        const rows = document.querySelectorAll("#prediction-table tbody tr");
+        let matchCount = 0;
+
+        rows.forEach(row => {
+            if (row.classList.contains("no-data")) {
+                row.style.display = "none";
+                return;
+            }
+
+            const cells = row.querySelectorAll("td");
+            let rowMatches = false;
+
+            // Clear previous highlights
+            cells.forEach(cell => {
+                cell.innerHTML = cell.textContent;
+            });
+
+            cells.forEach(cell => {
+                const text = cell.textContent.toLowerCase();
+                if (text.includes(filter) && filter !== "") {
+                    const regex = new RegExp(`(${filter})`, "gi");
+                    cell.innerHTML = cell.textContent.replace(regex, '<mark>$1</mark>');
+                    rowMatches = true;
+                }
+            });
+
+            row.style.display = rowMatches ? "" : "none";
+            if (rowMatches) matchCount++;
+        });
+
+        // Toggle "no data" row
+        const noDataRow = document.querySelector("#prediction-table .no-data");
+        if (noDataRow) {
+            noDataRow.style.display = matchCount > 0 ? "none" : "";
+        }
+
+        // Display match count
+        const matchCountDisplay = document.getElementById("match-count");
+        matchCountDisplay.innerText = filter
+            ? `Found ${matchCount} match(es) for "${filter}"`
+            : "";
+    }
+</script>
+
+{% endblock %}

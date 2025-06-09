@@ -1,0 +1,36 @@
+{% extends 'users/userbase.html' %}
+{% block contents %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">List of Films</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="bg-warning text-white">
+                <tr>
+                    <th>ID</th>
+                    <th>Film Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for input in inputs %}
+                <tr>
+                    <td>{{ input.id }}</td>
+                    <td>{{ input.text }}</td>
+                    <td>
+                        <form action="{% url 'predict' input.id %}" method="get" style="display:inline;">
+                            <button class="btn btn-primary btn-sm" type="submit">Predict</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">No data found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

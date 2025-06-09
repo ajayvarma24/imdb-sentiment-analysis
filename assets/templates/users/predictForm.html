@@ -1,0 +1,123 @@
+{% extends 'users/userbase.html' %} {% block contents %}
+<style>
+  .prediction-container {
+    max-width: 600px;
+    background: white;
+    padding: 25px 30px;
+    margin: 30px auto 60px auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #444;
+  }
+  .prediction-container h2 {
+    text-align: center;
+    color: #5a2a00;
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+  .prediction-result {
+    margin-bottom: 25px;
+    text-align: center;
+    color: #b12704;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+  .prediction-info p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    color: #555;
+  }
+  textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1.8px solid #ccc;
+    font-size: 1rem;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    color: #333;
+    box-sizing: border-box;
+  }
+  textarea[readonly] {
+    background: #f7f7f7;
+    color: #555;
+  }
+  table {
+    border-collapse: separate;
+    border-spacing: 0 18px;
+    width: 100%;
+  }
+  td:first-child {
+    vertical-align: top;
+    padding-right: 15px;
+    font-weight: 600;
+    color: #444;
+    width: 30%;
+    white-space: nowrap;
+  }
+  td:last-child {
+    width: 70%;
+  }
+  button.predict-btn {
+    background-color: #5a2a00;
+    color: white;
+    font-weight: 600;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 150px;
+  }
+  button.predict-btn:hover {
+    background-color: #7a3c00;
+  }
+  .saved-info {
+    color: green;
+    font-style: italic;
+    margin-top: 10px;
+    text-align: center;
+  }
+</style>
+
+<div class="prediction-container">
+  <h2>IMDB Movie Reviews Prediction Form</h2>
+
+  {% if output %}
+  <div class="prediction-result">Prediction Result: {{ output }}</div>
+  <div class="prediction-info">
+    <p><strong>User Input:</strong> {{ user_input }}</p>
+    <p><strong>Admin Text:</strong> {{ input_text }}</p>
+  </div>
+  <p class="saved-info">Saved to <code>output.txt</code> ✅</p>
+  {% endif %}
+
+  <form action="" method="post">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>Admin Text</td>
+        <td><textarea readonly rows="4">{{ input_text }}</textarea></td>
+      </tr>
+      <tr>
+        <td>Enter Your Input</td>
+        <td>
+          <textarea
+            name="user_input"
+            required
+            rows="4"
+            placeholder="Type your review here..."
+          ></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button type="submit" class="predict-btn">Predict</button></td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+{% endblock %}

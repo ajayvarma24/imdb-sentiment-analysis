@@ -1,0 +1,112 @@
+{% extends 'base.html' %} {% load static %} {% block contents %}
+
+<section class="bg-light">
+  <div class="container py-5">
+    <div class="row text-center py-3">
+      <div class="col-lg-6 m-auto">
+        <h1 class="h3" style="font-weight: bold">User Register Form</h1>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-6">
+        <div
+          class="card p-4 shadow-sm border-0"
+          style="background-color: #f8f9fa; border-radius: 20px"
+        >
+          <form
+            action="{% url 'UserRegisterActions' %}"
+            method="POST"
+            style="width: 100%"
+          >
+            {% csrf_token %}
+
+            <div class="form-group mb-3">
+              <label>User Name</label><br />
+              {{ form.name|safe }}
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Login ID</label><br />
+              {{ form.loginid|safe }}
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Password</label><br />
+              {{ form.password|safe }}
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Mobile</label><br />
+              {{ form.mobile|safe }}
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Email</label><br />
+              {{ form.email|safe }}
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Locality</label><br />
+              {{ form.locality|safe }}
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Address</label><br />
+              {{ form.address|safe }}
+            </div>
+
+            <div class="form-group mb-3">
+              <label>City</label><br />
+              {{ form.city|safe }}
+            </div>
+
+            <div class="form-group mb-3">
+              <label>State</label><br />
+              {{ form.state|safe }}
+            </div>
+
+            <div class="form-group mb-4">{{ form.status|safe }}</div>
+
+            <div class="text-center">
+              <button
+                class="btn btn-primary text-white py-2 px-4"
+                style="border-radius: 30px; font-weight: 500"
+                type="submit"
+              >
+                Register
+              </button>
+            </div>
+
+            {% if messages %}
+            <div class="mt-3">
+              {% for message in messages %}
+              <div style="color: red">{{ message }}</div>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  label {
+    font-weight: 500;
+  }
+</style>
+
+{% endblock %}

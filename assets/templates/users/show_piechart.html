@@ -1,0 +1,109 @@
+{% extends 'users/userbase.html' %}
+{% block contents %}
+{% load static %}
+
+<h2 align="center">Prediction Sentiment Analysis by Film</h2>
+
+<!-- Chart Container -->
+<div class="chart-grid" id="charts-container"></div>
+
+<!-- Load Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    .chart-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px;
+    }
+
+    .chart-box {
+        width: 350px;
+        min-width: 300px;
+        min-height: 400px; /* Prevent shrinking */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        background-color: #f9f9f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .chart-title {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: darkblue;
+    }
+
+    .sentiment-summary {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    canvas {
+        width: 100% !important;
+        height: 300px !important; /* Force a minimum height */
+    }
+</style>
+<script>
+    const chartData = JSON.parse('{{ chart_data_json|escapejs }}');
+    const container = document.getElementById("charts-container");
+
+    chartData.forEach((data, index) => {
+        const box = document.createElement("div");
+        box.className = "chart-box";
+
+        const title = document.createElement("div");
+        title.className = "chart-title";
+        title.innerText = `"${data.film}"`;
+
+        const summary = document.createElement("div");
+        summary.className = "sentiment-summary";
+        summary.innerText = `Positive: ${data.counts[0]} | Negative: ${data.counts[1]} | Total: ${data.counts[0] + data.counts[1]}`;
+
+        const canvas = document.createElement("canvas");
+        canvas.id = `chart_${index}`;
+
+        box.appendChild(title);
+        box.appendChild(summary);
+        box.appendChild(canvas);
+        container.appendChild(box);
+
+        new Chart(canvas, {
+            type: 'pie',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.counts,
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',   // Positive
+                        'rgba(255, 99, 132, 0.6)'    // Negative
+                    ],
+                    borderColor: 'white',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

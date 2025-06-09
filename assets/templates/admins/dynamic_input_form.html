@@ -1,0 +1,302 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dynamic Input Form</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <!-- Favicon -->
+    <link href="{% static 'img/favicon.ico' %}" rel="icon" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Libraries -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet" />
+    <link
+      href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'lib/lightbox/css/lightbox.min.css' %}"
+      rel="stylesheet"
+    />
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+
+    <style>
+      .input-container {
+        margin: 15px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .input-container input {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 300px;
+      }
+      .input-container button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .input-container button:hover {
+        background-color: darkred;
+      }
+      button.add-btn,
+      button.save-btn {
+        background-color: orange;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px;
+      }
+      button.add-btn:hover,
+      button.save-btn:hover {
+        background-color: darkorange;
+      }
+      table {
+        width: 60%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background: white;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      th {
+        background-color: orange;
+        color: white;
+      }
+      .delete-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .delete-btn:hover {
+        background-color: darkred;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Top Bar Start -->
+    <div class="top-bar d-none d-md-block">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6"><div class="top-bar-left"></div></div>
+          <div class="col-md-6"><div class="top-bar-right"></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Top Bar End -->
+
+    <!-- Nav Bar Start -->
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark">
+      <div class="container-fluid">
+        <a href="#" class="navbar-brand"
+          ><span style="color: wheat">IMDB movie reviews</span></a
+        >
+        <button
+          type="button"
+          class="navbar-toggler"
+          data-toggle="collapse"
+          data-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-between"
+          id="navbarCollapse"
+        >
+          <div class="navbar-nav ml-auto">
+            <a href="{% url 'AdminHome' %}" class="nav-item nav-link">Home</a>
+            <a href="{% url 'RegisterUsersView' %}" class="nav-item nav-link"
+              >User Details</a
+            >
+            <a href="{% url 'dynamic_input' %}" class="nav-item nav-link active"
+              >Films</a
+            >
+            <a href="{% url 'index' %}" class="nav-item nav-link">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Nav Bar End -->
+
+    <!-- Page Header Start -->
+    <div class="page-header" style="background: teal">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2 style="color: wheat">IMDB movie reviews</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+      <h2 class="text-warning text-center">Welcome to Admin Homepage...</h2>
+      <input type="hidden" id="csrf-token" value="{{ csrf_token }}" />
+
+      <div class="text-center">
+        <button class="add-btn" onclick="addInput()">Add Movie</button>
+      </div>
+      <div id="inputArea"></div>
+      <div class="text-center">
+        <button class="save-btn" onclick="saveInputs()">Save Inputs</button>
+      </div>
+
+      <h3 class="text-center mt-4">Saved Inputs</h3>
+      <table class="table table-bordered table-striped">
+        <tr>
+          <th>ID</th>
+          <th>Input Text</th>
+          <th>Action</th>
+        </tr>
+        {% for input in saved_inputs %}
+        <tr id="row-{{ input.id }}">
+          <td>{{ input.id }}</td>
+          <td>{{ input.text }}</td>
+          <td>
+            <button class="delete-btn" onclick="deleteInput({{ input.id }})">
+              Delete
+            </button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No data found</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="container copyright">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <p>
+            &copy; <a href="#">All Right Reserved by @2024 Alex Corporation.</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/isotope/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'lib/lightbox/js/lightbox.min.js' %}"></script>
+    <script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script>
+    <script src="{% static 'mail/contact.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <!-- Custom Script -->
+    <script>
+      function getCSRFToken() {
+        return document.getElementById("csrf-token").value;
+      }
+
+      function addInput() {
+        const inputArea = document.getElementById("inputArea");
+        if (inputArea.children.length > 0) {
+          alert(
+            "Only one movie input allowed at a time. Please save or delete the current one."
+          );
+          return;
+        }
+
+        const container = document.createElement("div");
+        container.className = "input-container";
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Enter movie";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = function () {
+          container.remove();
+        };
+
+        container.appendChild(input);
+        container.appendChild(deleteButton);
+        inputArea.appendChild(container);
+      }
+
+      function saveInputs() {
+        let inputs = document.querySelectorAll(".input-container input");
+        let inputValues = [];
+        inputs.forEach((input) => {
+          if (input.value.trim() !== "") {
+            inputValues.push(input.value);
+          }
+        });
+
+        fetch("/save-inputs/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": getCSRFToken(),
+          },
+          body: new URLSearchParams({ inputs: JSON.stringify(inputValues) }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert(data.message);
+            location.reload();
+          });
+      }
+
+      function deleteInput(id) {
+        fetch("/delete-input/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": getCSRFToken(),
+          },
+          body: new URLSearchParams({ id: id }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert(data.message);
+            document.getElementById("row-" + id).remove();
+          });
+      }
+    </script>
+  </body>
+</html>
